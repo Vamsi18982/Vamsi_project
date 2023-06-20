@@ -1,0 +1,101 @@
+import random
+
+categories = {
+    "fruits": ["apple", "orange", "mango", "grapes", "banana", "papaya", "dragon", "kiwi"],
+    "flowers": ["rose", "lotus", "hibiscus", "sun flower", "jasmine", "lily"],
+    "colors": ["green", "blue", "violet", "red", "black", "yellow", "orange"]
+}
+
+
+def choose_category():
+    print("Available categories:")
+    for i in categories:
+        print(i.capitalize())
+
+    while True:
+        choice = input("Choose a category: ").lower()
+        if choice in categories:
+            return choice
+        else:
+            print("Invalid category. Please choose a valid category.")
+
+
+def choose_word(category):
+    word = random.choice(categories[category])
+    return word
+
+
+def display_word(word, guessed_letters):
+    displayed_word = ""
+    for letter in word:
+        if letter in guessed_letters:
+            displayed_word += letter
+        else:
+            displayed_word += "_"
+    print(displayed_word)
+
+
+def play_hangman():
+    category = choose_category()
+    word = choose_word(category)
+    guessed_letters = []
+    tries = 5
+
+    while tries > 0:
+        display_word(word, guessed_letters)
+
+        guess = input("Guess a letter: ").lower()
+
+        if guess in guessed_letters:
+            print("You have already guessed that letter. Try again.")
+            continue
+        guessed_letters.append(guess)
+        if guess in word:
+            print("Correct!")
+        else:
+            print("Wrong guess!")
+            tries -= 1
+
+        if all(letter in guessed_letters for letter in word):
+            print("Congratulations! You won!")
+            break
+
+    if tries == 0:
+        print("You lost! The word was:", word)
+
+
+play_hangman()
+# output:
+Available categories:
+Fruits
+Flowers
+Colors
+Choose a category: colors
+_____
+Guess a letter: r
+Wrong guess!
+_____
+Guess a letter: y
+Wrong guess!
+_____
+Guess a letter: b
+Correct!
+b____
+Guess a letter: u
+Wrong guess!
+b____
+Guess a letter: y
+You have already guessed that letter. Try again.
+b____
+Guess a letter: w
+Wrong guess!
+b____
+Guess a letter: l
+Correct!
+bl___
+Guess a letter: u
+You have already guessed that letter. Try again.
+bl___
+Guess a letter: e
+Wrong guess!
+You lost! The word was: black
